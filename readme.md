@@ -1,7 +1,174 @@
+Hospital:
 - MIMIC-IV data: 
+ Put the MIMIC-IV of ../data folder. The data tabeles used for hospital readmission prediction are: 
+  
+   - data_dir: ../data 
+   - patients.csv.gz
+   - admissions.csv.gz
+   - icustays.csv.gz
+   - lab_events.csv.gz
+   - d_labitems.csv.gz
+     
+ configgen.ipython generates config.yml which used for setting task parameters. Initiate your parameters as your use case definition. 
+
+- Defult config:
+     - data_dir: ../data
+    `- subtask:
+        atAdmit: 0
+        atDischarge: 1
+        isEarly: 0
+    - wt_forrolling:
+        dischwt_for_rolling:
+          24: 1
+          48: 0
+        erwt_for_rolling:
+          2: 0
+          6: 0
+          12: 1
+    - cat_encoding:
+        le: 1
+        oh: 0
+        woe: 0
+    - outlier_heal:
+        Advanced: 0
+        MAD: 0
+        eif: 1
+    - imp_type:
+        mean: 1
+        median: 0
+        mice: 0
+    - model:
+        Logisticregression: 1
+        MLP: 0
+        XGB: 1
+    - target:
+        '30': 1
+        '7': 1
+        ntw: 0
+    - measure:
+        accuracy: 0
+        f1_score: 1
+        recall: 0
+    - GPU: 1
+    - CV:
+        5: 1
+        10: 0`
 
   
+  - During atAdmit prediction just static_feats will be used and labevents_feats can be extracted when runing config with atDischarge and isEarly readmission prediction
   
+  - dischwt_for_rolling(discharge) and erwt_for_rolling(early) determines the time window for rolling mean of labevents features (e.g 12 for early and 24 for atDischarge)
+  
+  - For this release we just implemented le(label encoder) for categorical encoding
+  
+  - Mice imputation will be implemented during next release
+  
+  - By default roc_auc  and  f1_score will be generated on results 
+  
+  - Multi-selection parameters:
+    subtask, model, target, measure
+   
+  - Uni-selection parameters: 
+    wt_forrolling(window time for rolling), cat_encoding, outlier_heal, imp_type(imputation type)
+  
+  
+  - Some parameters will be presented during next versions so don't use following parameters in config setting:
+    'cat_encoding':  'oh' and  'woe'
+    'imp_type': median' and  'mice'
+    'dischwt_for_rolling':  48 hours 
+    'erwt_for_rolling': 2 and  6 hours
+    'outlier_heal': 'Advanced' and 'MAD'
+
+
+Note: 
+
+Label extraction will be perform at the beginning of the running program , building '../erVisits' folder by breaking data by subjects.
+After runing the first time there is no need to do it twice, the labeled data folder exists for next running and will not run twise unless you remove ../generate_dataset/erVisits folder.
+ 
+Folder Structure: 
+
+ sudo apt-get install tree
+ 
+ tree /path/to/root
+ 
+
+
+
+- Requirements: 
+
+    - numpy==1.19.5, 
+    - pandas==1.2.4,
+    - scipy==1.6.2, 
+    - scikit-learn==0.24.2,
+    - matplotlib==3.3.4, 
+    - seaborn==0.11.1,  
+    - imbalanced-learn==0.8.0, 
+    - tensorboard==2.7.0, 'tensorflow-gpu==2.5.0',  'tensorflow==2.7.0',  
+    - tqdm==4.59.0, 
+    - xgboost==1.3.3,
+    - shap==0.39.0, 
+    - keras==2.7.0, 
+    - pyyaml== 6.0 (pip install pyyaml)
+    - h2o-3.36.0.3
+
+
+ - Some important features of next releases:
+   - Advanced resampling methods for handling imbalanced data
+   - Advanced outlier healing methods
+   - Advanced feature selection methods for algorithms
+   - Tuning module for algorithms
+   - Separated interpratation module
+
+
+Steps:
+
+0. The app will run in two phase 1. Label Extraction 2.Preprocessing and Model building and trainin. So run main.py to building '../erVisits' folder by breaking stays by subjects and extract labels.
+    After extracting labels and building labeled data run configgen.ipynb and and set parameters and run main.py again to continue based on config.yml.
+
+for runing the program find main python file:  ../generate_dataset/main.py and run:
+
+python generate_datasets/main.py   
+
+data generation and training will be notified through running based on config setting.
+
+Steps:
+
+1. start with following config and run algorithms on "atAdmit" subtask in this case only static and demographic features will be used :
+dict_file = dict_file = [{'data_dir': '../data'},
+            {'subtask':{'isEarly' : 0, 'atDischarge':0, 'atAdmit':1}},
+            {'wt_forrolling':{'erwt_for_rolling':{12:1, 6:0, 2:0}, 'dischwt_for_rolling': {24:1, 48:0}}}, 
+            {'cat_encoding':{'le':1, 'woe':0, 'oh':0}}, 
+            {'outlier_heal':{'eif':1, 'MAD':0, 'Advanced':0}}, 
+            {'imp_type':{'mean':1, 'median':0,'mice':0 }}, 
+            {'model':{'XGB':1, 'Logisticregression':1, 'MLP':1}}, 
+            {'target':{'30':1, '7':1, 'ntw':1}}, 
+            {'measure':{'f1_score':1, 'recall':0, 'accuracy':0 }},
+            {'GPU':1}]
+
+
+2. Run step 2 and add labevents features (takes more run time) by selectiong :'isEarly' : 1 or  'atDischarge':1
+
+   (During above steps if GPU is not avaialable,  set GPU:0 )
+
+
+Note for running algorithms: 
+
+    - XBG handles missing data automatically and less sensitive to utliers 
+    - Imputing scaling before running linear algorithms we used is mandatory
+    - in this version we used statis parameters for all input data just tune target weights for handle imbalance data to get better results tuning module is recommended
+    
+    
+Note for outlier healing:
+
+    We presented Iso_Forest.ipynb to show how we performed outlier healing with isolation forest.
+    The results show imputing nan values is a scinificant factor and mean impute will increase the outlier scores. 
+    
+    - By default outlier_healing function uses "Extended Isolation Forest" . 
+
+
+ICU
+- MIMIC-IV data: 
+
    - data_dir: ../data (put MIMIC-IV data in this folder)
    - patients.csv.gz
    - admissions.csv.gz
