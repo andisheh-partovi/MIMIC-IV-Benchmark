@@ -1,4 +1,12 @@
-Hospital:
+**Introducing MiPy: a Benchmarking Framework for Machine Learning on MIMIC-IV DataBase**
+
+The framwork builds a set of data processing and modelling tools on the MIMIC-IV database for researchers.
+https://physionet.org/content/mimiciv/0.4/
+
+We are starting the framework with Hospital and ICU Readmission Prediction and will add Mortality Predcition and other tasks in the future
+
+**Hospital Readmission Task:**
+
 - MIMIC-IV data: 
  Put the MIMIC-IV of ../data folder. The data tabeles used for hospital readmission prediction are: 
   
