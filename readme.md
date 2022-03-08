@@ -12,19 +12,19 @@ We are starting the framework with Hospital and ICU Readmission Prediction and w
 2.	Copy the required files to a folder called “data”. If the folder does not exists, create one in the root directory of the project.
 
 Hospital readmission required files: 
-  •	admissions.csv.gz
-  •	d_labitems.csv.gz
-  •	labevents.csv.gz
-  •	patients.csv.gz
+  - admissions.csv.gz
+  - d_labitems.csv.gz
+  - labevents.csv.gz
+  - patients.csv.gz
 
 ICU readmission required files:
-  •	admissions.csv.gz
-  •	chartevents.csv.gz
-  •	d_items.csv.gz
-  •	d_labitems.csv.gz
-  •	icustays.csv.gz
-  •	labevents.csv.gz
-  •	patients.csv.gz
+  - admissions.csv.gz
+  - chartevents.csv.gz
+  - d_items.csv.gz
+  - d_labitems.csv.gz
+  - icustays.csv.gz
+  - labevents.csv.gz
+  - patients.csv.gz
 
 3.	Run the “reduce_mem.py” script from “preprocessing” to reduce the size of the “chartevents” and “labevents” files
 
