@@ -40,10 +40,10 @@ The file configgen.ipython generates config.yml which is used for setting task p
 
 - Defult config:
      - data_dir: ../data
-    `- subtask:
-        atAdmit: 0
-        atDischarge: 1
-        isEarly: 0
+     - subtask:
+        - atAdmit: 0
+        - atDischarge: 1
+        - isEarly: 0
         
     - wt_forrolling:
         dischwt_for_rolling:
@@ -85,9 +85,9 @@ The file configgen.ipython generates config.yml which is used for setting task p
   
   - During atAdmit prediction just static_feats will be used and labevents_feats can be extracted when runing config with atDischarge and isEarly readmission prediction
   
-  - dischwt_for_rolling(discharge) and erwt_for_rolling(early) determines the time window for rolling mean of labevents features (e.g 12 for early and 24 for atDischarge)
+  - dischwt_for_rolling (discharge) and erwt_for_rolling (early) determines the time window for rolling mean of labevents features (e.g 12 for early and 24 for atDischarge)
   
-  - For this release we just implemented le(label encoder) for categorical encoding
+  - For this release we just implemented le (label encoder) for categorical encoding
   
   - Mice imputation will be implemented during next release
   
@@ -97,7 +97,7 @@ The file configgen.ipython generates config.yml which is used for setting task p
     subtask, model, target, measure
    
   - Uni-selection parameters: 
-    wt_forrolling(window time for rolling), cat_encoding, outlier_heal, imp_type(imputation type)
+    wt_forrolling (window time for rolling), cat_encoding, outlier_heal, imp_type (imputation type)
   
   
   - Some parameters will be presented during next versions so don't use following parameters in config setting:
