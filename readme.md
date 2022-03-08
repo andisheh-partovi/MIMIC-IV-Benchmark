@@ -1,21 +1,40 @@
 # **Introducing MiPy: a Benchmarking Framework for Machine Learning on MIMIC-IV DataBase**
 
-The framwork builds a set of data processing and modelling tools on the MIMIC-IV database for researchers.
+The framwork builds a set of data processing and modelling tools on the MIMIC-IV database in Python. The MIMIC database is hosted at:
 https://physionet.org/content/mimiciv/0.4/
 
 We are starting the framework with Hospital and ICU Readmission Prediction and will add Mortality Predcition and other tasks in the future.
 
-## **Hospital Readmission Task:**
+## **Quick Start**
 
-- MIMIC-IV data: 
- Put the MIMIC-IV of ../data folder. The data tables used for hospital readmission prediction are: 
-  
-   - data_dir: ../data 
-   - patients.csv.gz
-   - admissions.csv.gz
-   - icustays.csv.gz
-   - lab_events.csv.gz
-   - d_labitems.csv.gz
+1.	Access the data at https://physionet.org/content/mimiciv/0.4/
+
+2.	Copy the required files to a folder called “data”. If the folder does not exists, create one in the root directory of the project.
+
+Hospital readmission required files: 
+  •	admissions.csv.gz
+  •	d_labitems.csv.gz
+  •	labevents.csv.gz
+  •	patients.csv.gz
+
+ICU readmission required files:
+  •	admissions.csv.gz
+  •	chartevents.csv.gz
+  •	d_items.csv.gz
+  •	d_labitems.csv.gz
+  •	icustays.csv.gz
+  •	labevents.csv.gz
+  •	patients.csv.gz
+
+3.	Run the “reduce_mem.py” script from “preprocessing” to reduce the size of the “chartevents” and “labevents” files
+
+4.	Create the baseline cohort by running the “main.py” file in “generate_dataset”. This will create a new folder (“erStays”). This step is generic to both readmission tasks. There is also a Python Notebook version of the main.py
+
+5.	Edit the “configge.ipynb” file in the “resources” folder to match your requirements. A description of the parameters is provided below. Then run this file to generate the required "config.yml"
+
+6.	Run “main.py” again for the full run of the system. 
+
+## **Full guide: Hospital Readmission Task:**
      
 The file configgen.ipython generates config.yml which is used for setting task parameters. Initiate your parameters as your use case definition. 
 
