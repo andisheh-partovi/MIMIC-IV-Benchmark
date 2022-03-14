@@ -45,43 +45,44 @@ The file configgen.ipython generates config.yml which is used for setting task p
         - atDischarge: 1
         - isEarly: 0
         
-    - wt_forrolling:
-        dischwt_for_rolling:
-          24: 1
-          48: 0
-        erwt_for_rolling:
-          2: 0
-          6: 0
-          12: 1
-    - cat_encoding:
-        le: 1
-        oh: 0
-        woe: 0
-    - outlier_heal:
-        Advanced: 0
-        MAD: 0
-        eif: 1
-    - imp_type:
-        mean: 1
-        median: 0
-        mice: 0
+    - wt_forrolling [window time for rolling for early prediction and discharge prediction]:
+      -  dischwt_for_rolling [discharge window time for rolling mean]:
+          -  24 [last 24 hours]: 1
+          -  48 [last 48 hours]: 0
+      - erwt_for_rolling [early window time for rolling mean]:
+          - 2 [first 2 hours]: 0
+          - 6 [first 6 hours]: 0
+          - 12 [first 12 hours]: 1
+    - cat_encoding [categorical encoding methods]:
+        - le [Label Encoding]: 1
+        - oh [One Hot]: 0
+        - woe [Weight of Evidence]: 0
+    - outlier_heal [Outlier healing Methods]:
+        - Advanced [Variational auto-encoder]: 0
+        - MAD [Median Absolute Deviation]: 0
+        - eif [Extended Isolation Forest]: 1
+    - imp_type [Imputation Methods]:
+        - mean: 1
+        - median: 0
+        - mice [Multiple Imputation by Chained Equations]: 0
     - model:
-        Logisticregression: 1
-        MLP: 0
-        XGB: 1
+        - Logisticregression: 1
+        - MLP: 0
+        - XGB: 1
     - target:
-        '30': 1
-        '7': 1
-        ntw: 0
+        - 30 [30 days after discharge]: 1
+        - 7 [7 days after discharge]: 1
+        - ntw [No Time Window]: 0
     - measure:
-        accuracy: 0
-        f1_score: 1
-        recall: 0
+        - accuracy: 0
+        - f1_score: 1
+        - recall: 0
     - GPU: 1
     - CV:
-        5: 1
-        10: 0`
+        - 5 [5-fold Stratified Cross Validation]: 1
+        - 10 [10-fold Stratified Cross Validation]: 0
 
+**Notes**
   
   - During atAdmit prediction just static_feats will be used and labevents_feats can be extracted when runing config with atDischarge and isEarly readmission prediction
   
@@ -91,7 +92,7 @@ The file configgen.ipython generates config.yml which is used for setting task p
   
   - Mice imputation will be implemented during next release
   
-  - By default roc_auc  and  f1_score will be generated on results 
+  - By default roc_auc and f1_score will be generated on results 
   
   - Multi-selection parameters:
     subtask, model, target, measure
@@ -100,7 +101,7 @@ The file configgen.ipython generates config.yml which is used for setting task p
     wt_forrolling (window time for rolling), cat_encoding, outlier_heal, imp_type (imputation type)
   
   
-  - Some parameters will be presented during next versions so don't use following parameters in config setting:
+  - The following options are planned for the next release:
     'cat_encoding':  'oh' and  'woe'
     'imp_type': median' and  'mice'
     'dischwt_for_rolling':  48 hours 
@@ -108,11 +109,6 @@ The file configgen.ipython generates config.yml which is used for setting task p
     'outlier_heal': 'Advanced' and 'MAD'
 
 
-Note: 
-
-Label extraction will be performed at the beginning of the running program, building '../erVisits' folder by breaking data by subjects.
-After running the first time there is no need to do it twice as the labeled data folder exists for next running and will not run twice unless you remove ../generate_dataset/erVisits folder.
- 
 Folder Structure: 
 ```
  sudo apt-get install tree
@@ -155,6 +151,8 @@ Folder Structure:
    
 So run main.py to build '../erVisits' folder by breaking stays by subjects and extracting labels.
 After extracting labels and building labeled data run configgen.ipynb and and set parameters and run main.py again to continue based on config.yml.
+
+Label extraction will be performed at the beginning of the running program, building '../erVisits' folder by breaking data by subjects. After running the first time there is no need to do it again as the labeled data folder exists for next running and will not run twice unless you remove ../generate_dataset/erVisits folder.
 
 For running the program find the main python file:  ../generate_dataset/main.py and run:
 ```
