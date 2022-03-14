@@ -77,8 +77,8 @@ The file configgen.ipython generates config.yml which is used for setting task p
         - accuracy: 0
         - f1_score: 1
         - recall: 0
-    - GPU: 1
-    - CV:
+    - GPU: 1 [To use the GPU for the MLP model, using Cuda V 11]
+    - CV [cross-validation option]:
         - 5 [5-fold Stratified Cross Validation]: 1
         - 10 [10-fold Stratified Cross Validation]: 0
 
